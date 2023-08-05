@@ -1,6 +1,8 @@
 import os
 import pandas as pd
 from prophet import Prophet
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 class Data:
     def __init__(self):
@@ -33,13 +35,12 @@ class Data:
         forecast = m.predict(future)
         plot1 = m.plot(forecast)
 
-        return plot1
+        ax = plot1.gca()
+        handles, labels = ax.get_legend_handles_labels()
+        ax.legend(handles, labels)
 
+        fig2, ax2 = plt.subplots(figsize=(8, 6))
+        sns.lineplot(forecast.loc[forecast['ds'] > '2023-05-31'], x='ds', y='yhat', ax=ax2, label='Forecast')
+        ax2.legend()
 
-# ex = Data()
-# df = ex.get_data()
-# agencies = ex.agency_list(df)
-# print(agencies)
-
-# modes = ex.mode_list(df, "Los Angeles County Metropolitan Transportation Authority ")
-# print(modes)
+        return plot1, fig2

@@ -14,7 +14,11 @@ class Demo1:
         customtkinter.set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
 
         self.master = master
-        self.master.geometry(f"{self.settings.width}x{self.settings.height}")
+        self.screen_width = self.master.winfo_screenwidth()
+        self.screen_height = self.master.winfo_screenheight()
+        self.x_pos = (self.screen_width - self.settings.width) // 2
+        self.y_pos = (self.screen_height - self.settings.height) // 2
+        self.master.geometry(f"{self.settings.width}x{self.settings.height}+{self.x_pos}+{self.y_pos}")
         #self.master.configure(bg=self.settings.main_color)
         self.master.title('App Form')
 
@@ -136,14 +140,19 @@ class Demo1:
         selected_value2 = self.mode_optionmenu_var.get()
 
         # Assuming the self.ex.forecast method returns a valid Figure object
-        plot_fig = self.ex.forecast(self.df, selected_value1, selected_value2)
+        plot_fig = self.ex.forecast(self.df, selected_value1, selected_value2)[0]
+        plot_fig_2 = self.ex.forecast(self.df, selected_value1, selected_value2)[1]
 
         # Create a canvas to display the graph in tkinter
         canvas = FigureCanvasTkAgg(plot_fig, master=self.frame)
         canvas.draw()
 
+        canvas2 = FigureCanvasTkAgg(plot_fig_2, master=self.frame)
+        canvas2.draw()
+
         # Place the canvas in the tkinter frame
         canvas.get_tk_widget().grid(row=2, column=2, padx=10, pady=10)
+        canvas2.get_tk_widget().grid(row=2, column=4, padx=10, pady=10)
 
         # Update the label text with the currently selected agency and mode
         selected_agency = self.optionmenu_var.get()

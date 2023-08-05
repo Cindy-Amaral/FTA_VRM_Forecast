@@ -3,9 +3,10 @@ class Settings:
 
     def __init__(self):
         """Initialize form settings."""
-
-        self.width = 1400
+        
+        self.width = 1650
         self.height = 650
+
         #self.title('App Form')
         #root.iconbitmap('icons8-rock-48.ico')
 
